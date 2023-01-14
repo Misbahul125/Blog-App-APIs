@@ -9,7 +9,7 @@ public class BlogAppApIsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BlogAppApIsApplication.class, args);
 		
-		System.out.println("Hello world");
+		System.out.println("Application Started Successfully !!");
 	}
 
 }
