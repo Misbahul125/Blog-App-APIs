@@ -1,3 +1,6 @@
+/**
+ * It is used to perform operations on a database.
+ */
 package com.codershub.blog.entities;
 
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ import lombok.Setter;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name = "user_name", nullable = false, length = 100)

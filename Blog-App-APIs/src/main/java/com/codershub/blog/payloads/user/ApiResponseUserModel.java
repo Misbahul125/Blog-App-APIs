@@ -11,11 +11,11 @@ import lombok.Setter;
 @Setter
 public class ApiResponseUserModel {
 	
-	private boolean success;
+	private boolean success;//Denotes whether api call is successful
 	
-	private int code;
+	private int code;//shows Http codes 
 	
-	private String message;
+	private String message;//custom message
 
 	private UserModel userModel;
 	

@@ -1,3 +1,9 @@
+/**
+ * 
+ * It was Originally UserDTO but was changed to userModel
+ * This will contain user details. 
+ */
+ 
 package com.codershub.blog.payloads.user;
 
 import lombok.AllArgsConstructor;

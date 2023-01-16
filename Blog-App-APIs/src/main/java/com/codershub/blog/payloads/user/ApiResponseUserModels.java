@@ -1,3 +1,4 @@
+//Used for multiple users
 package com.codershub.blog.payloads.user;
 
 import java.util.List;
