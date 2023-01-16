@@ -15,7 +15,7 @@ import com.codershub.blog.repositories.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 	
-	//@Autowired
+	@Autowired
 	private UserRepository userRepository;
 
 	@Override

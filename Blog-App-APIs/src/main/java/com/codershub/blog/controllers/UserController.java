@@ -1,13 +1,12 @@
 package com.codershub.blog.controllers;
 
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codershub.blog.payloads.user.ApiResponseUserModel;
+import com.codershub.blog.payloads.user.ApiResponseUserModels;
 import com.codershub.blog.payloads.user.UserModel;
 import com.codershub.blog.services.UserService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 	
 	@Autowired
@@ -42,33 +42,67 @@ public class UserController {
 	}
 	
 	//PUT-update user
-	@PutMapping("/{userId}")
-	public ResponseEntity<UserModel> updateUser(@RequestBody UserModel userModel, Integer userId)
+	@PutMapping("/")
+	public ResponseEntity<ApiResponseUserModel> updateUser(@RequestBody UserModel userModel)
 	{
 		UserModel updatedUser=this.userService.updateUser(userModel);
-		return ResponseEntity.ok(updatedUser);
+		
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
+				true, 
+				HttpStatus.OK.value(), 
+				"User Updated Successfully", 
+				updatedUser
+		);
+		
+		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
 	}
 	
 	//DELETE-delete user
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<ApiResponseUserModel> deleteUser(Integer userId)
+	public ResponseEntity<ApiResponseUserModel> deleteUser(@PathVariable Integer userId)
 	{
-		this.deleteUser(userId);
-		return new ResponseEntity(Map.of("message","User Deleted Successfully"),HttpStatus.OK); 
+		this.userService.deleteUserById(userId);
+		
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
+				true, 
+				HttpStatus.OK.value(), 
+				"User Deleted Successfully", 
+				null
+		);
+		
+		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
 	}
 	
 	//GET-get user
 	//Multiple user
 	@GetMapping("/")
-	public ResponseEntity<List<UserModel>> getAllUsers()
+	public ResponseEntity<ApiResponseUserModels> getAllUsers()
 	{
-		return ResponseEntity.ok(this.userService.getAllUsers());
+		List<UserModel> userModels = this.userService.getAllUsers();
+		
+		ApiResponseUserModels apiResponseUserModels = new ApiResponseUserModels(
+				true, 
+				HttpStatus.OK.value(), 
+				"Users Fetched Successfully", 
+				userModels
+		);
+		
+		return new ResponseEntity<ApiResponseUserModels>(apiResponseUserModels, HttpStatus.OK);
 	}
 
 	//Single user
 	@GetMapping("/{userId}")
-	public ResponseEntity getSingleUser(Integer userId)
+	public ResponseEntity<ApiResponseUserModel> getSingleUser(@PathVariable Integer userId)
 	{
-		return ResponseEntity.ok(this.userService.getUserById(userId));
+		UserModel userModel = this.userService.getUserById(userId);
+		
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
+				true, 
+				HttpStatus.OK.value(), 
+				"User Fetched Successfully", 
+				userModel
+		);
+		
+		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
 	}
 }
