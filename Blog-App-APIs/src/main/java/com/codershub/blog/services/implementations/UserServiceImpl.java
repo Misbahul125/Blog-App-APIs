@@ -3,6 +3,7 @@ package com.codershub.blog.services.implementations;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public UserModel createUser(UserModel userModel) {
@@ -78,32 +82,26 @@ public class UserServiceImpl implements UserService {
 	
 	private UserModel userEntityToUserModel(User user) {
 		
-		UserModel userModel = new UserModel(
-				user.getId(),
-				user.getName(),
-				user.getEmail(),
-				user.getPassword(),
-				user.getRole(),
-				user.isActive(),
-				user.getImageURL(),
-				user.getAbout()
-				);
+		/*
+		 * UserModel userModel = new UserModel( user.getId(), user.getName(),
+		 * user.getEmail(), user.getPassword(), user.getRole(), user.isActive(),
+		 * user.getImageURL(), user.getAbout() );
+		 */
+		
+		UserModel userModel = this.modelMapper.map(user, UserModel.class);
 		
 		return userModel;
 	}
 	
 	private User userModelToUserEntity(UserModel userModel) {
 		
-		User user = new User(
-				userModel.getId(),
-				userModel.getName(),
-				userModel.getEmail(),
-				userModel.getPassword(),
-				userModel.getRole(),
-				userModel.isActive(),
-				userModel.getImageURL(),
-				userModel.getAbout()
-				);
+		/*
+		 * User user = new User( userModel.getId(), userModel.getName(),
+		 * userModel.getEmail(), userModel.getPassword(), userModel.getRole(),
+		 * userModel.isActive(), userModel.getImageURL(), userModel.getAbout() );
+		 */
+		
+		User user = this.modelMapper.map(userModel, User.class);
 		
 		return user;
 	}
