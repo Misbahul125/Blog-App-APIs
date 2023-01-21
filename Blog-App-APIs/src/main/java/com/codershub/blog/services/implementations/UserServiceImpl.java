@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 		
 		User user = this.userRepository.findById(userId)
 				.orElseThrow(
-						(() -> new ResourceNotFoundException("User", "user ID", Integer.toString(userId)))
+						(() -> new ResourceNotFoundException("User", "user ID", userId))
 						);
 		
 		return this.userEntityToUserModel(user);
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 		//getting the user from DB, also helps us to check if user is present in DB or not
 		User userFromDB = this.userRepository.findById(userModel.getId())
 				.orElseThrow(
-						(() -> new ResourceNotFoundException("User", "user ID", Integer.toString(userModel.getId())))
+						(() -> new ResourceNotFoundException("User", "user ID", userModel.getId()))
 						);
 		
 		userFromDB = this.userModelToUserEntity(userModel);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 		
 		User userFromDB = this.userRepository.findById(userId)
 		.orElseThrow(
-				(() -> new ResourceNotFoundException("User", "user ID", Integer.toString(userId)))
+				(() -> new ResourceNotFoundException("User", "user ID", userId))
 				);
 		
 		this.userRepository.delete(userFromDB);
