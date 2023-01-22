@@ -6,6 +6,9 @@
  
 package com.codershub.blog.payloads.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +22,15 @@ public class UserModel {
 	
 	private int id;
 	
+	@NotEmpty(message = "Name cannot be empty !!")
+	@Size(min = 5, message = "Name should have at least 5 characters !!")
 	private String name;
 	
+	@Email(message = "Email is invalid !!")
 	private String email;
 	
+	@NotEmpty(message = "Password cannot be empty !!")
+	@Size(min = 8, message = "Password should have at least 8 characters !!")
 	private String password;
 	
 	private String role;
@@ -31,6 +39,7 @@ public class UserModel {
 	
 	private String imageURL;
 	
+	@NotEmpty(message = "About cannot be empty !!")
 	private String about;
 
 }

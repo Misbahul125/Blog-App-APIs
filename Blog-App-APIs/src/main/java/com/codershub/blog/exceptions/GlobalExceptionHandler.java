@@ -1,7 +1,12 @@
 package com.codershub.blog.exceptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,9 +16,25 @@ import com.codershub.blog.payloads.user.ApiResponseUserModel;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ApiResponseUserModel> resourceNotFoundExceptionHandler(ResourceNotFoundException ex)
+	public ResponseEntity<ApiResponseUserModel> resourceNotFoundExceptionHandler(ResourceNotFoundException exception)
 	{
-		ApiResponseUserModel apiResponse = new ApiResponseUserModel(false, HttpStatus.NOT_FOUND.value(), ex.getMessage(), null);
+		ApiResponseUserModel apiResponse = new ApiResponseUserModel(false, HttpStatus.NOT_FOUND.value(), exception.getMessage(), null);
 		return new ResponseEntity<ApiResponseUserModel>(apiResponse,HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiResponseFieldExceptionMessages> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+		
+		List<FieldExceptionMessage> messages = new ArrayList<>();
+		
+		//traversing through single/multiple error(s)
+		exception.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();//type casting each error object into FiedError class
+			messages.add(new FieldExceptionMessage(fieldName, error.getDefaultMessage()));
+		});
+		
+		ApiResponseFieldExceptionMessages apiResponse = new ApiResponseFieldExceptionMessages(false, HttpStatus.NOT_FOUND.value(), messages);
+		
+		return new ResponseEntity<ApiResponseFieldExceptionMessages>(apiResponse,HttpStatus.NOT_FOUND);
 	}
 }

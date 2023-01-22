@@ -18,6 +18,8 @@ import com.codershub.blog.payloads.user.ApiResponseUserModels;
 import com.codershub.blog.payloads.user.UserModel;
 import com.codershub.blog.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -27,7 +29,7 @@ public class UserController {
 	
 	//POST-create user
 	@PostMapping("/")
-	public ResponseEntity<ApiResponseUserModel> createUser(@RequestBody UserModel userModel) {
+	public ResponseEntity<ApiResponseUserModel> createUser(@Valid @RequestBody UserModel userModel) {
 		
 		UserModel createdUser = this.userService.createUser(userModel);
 		
@@ -43,7 +45,7 @@ public class UserController {
 	
 	//PUT-update user
 	@PutMapping("/")
-	public ResponseEntity<ApiResponseUserModel> updateUser(@RequestBody UserModel userModel)
+	public ResponseEntity<ApiResponseUserModel> updateUser(@Valid @RequestBody UserModel userModel)
 	{
 		UserModel updatedUser=this.userService.updateUser(userModel);
 		
