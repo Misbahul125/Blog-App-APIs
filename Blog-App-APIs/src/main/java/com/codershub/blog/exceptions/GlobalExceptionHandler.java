@@ -16,10 +16,10 @@ import com.codershub.blog.payloads.user.ApiResponseUserModel;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ApiResponseUserModel> resourceNotFoundExceptionHandler(ResourceNotFoundException exception)
+	public ResponseEntity<ApiResponseResourceNotFoundException> resourceNotFoundExceptionHandler(ResourceNotFoundException exception)
 	{
-		ApiResponseUserModel apiResponse = new ApiResponseUserModel(false, HttpStatus.NOT_FOUND.value(), exception.getMessage(), null);
-		return new ResponseEntity<ApiResponseUserModel>(apiResponse,HttpStatus.NOT_FOUND);
+		ApiResponseResourceNotFoundException apiResponse = new ApiResponseResourceNotFoundException(false, HttpStatus.NOT_FOUND.value(), exception.getMessage());
+		return new ResponseEntity<ApiResponseResourceNotFoundException>(apiResponse,HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)

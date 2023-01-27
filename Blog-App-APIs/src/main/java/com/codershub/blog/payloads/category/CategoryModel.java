@@ -13,9 +13,10 @@ public class CategoryModel {
 	
 	
 	private Integer categoryId;
+	
 	@NotBlank
-	@Size(min = 4,message ="min size is 4")
-	private String CategoryTitle;
+	@Size(min = 4,message ="Min size is 4")
+	private String categoryTitle;
 	
 	@NotBlank
 	@Size(min = 10,message="Min size is 10")

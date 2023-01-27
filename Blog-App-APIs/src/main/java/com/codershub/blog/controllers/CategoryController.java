@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codershub.blog.payloads.category.ApiResponseCategoryModel;
+import com.codershub.blog.payloads.category.ApiResponseCategoryModels;
 import com.codershub.blog.payloads.category.CategoryModel;
+import com.codershub.blog.payloads.user.ApiResponseUserModel;
 import com.codershub.blog.services.CategoryService;
 
 import jakarta.validation.Valid;
@@ -27,21 +29,37 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	
 	//create
 	@PostMapping("/")
-	public ResponseEntity<CategoryModel> createCategory(@Valid @RequestBody CategoryModel categoryModel)
+	public ResponseEntity<ApiResponseCategoryModel> createCategory(@Valid @RequestBody CategoryModel categoryModel)
 	{
-		CategoryModel createCategory=this.categoryService.createCategory(categoryModel);
-		return new ResponseEntity<CategoryModel>(createCategory,HttpStatus.CREATED);
+		
+		CategoryModel createdCategory = this.categoryService.createCategory(categoryModel);
+		
+		ApiResponseCategoryModel apiResponseCategoryModel = new ApiResponseCategoryModel(
+				true, 
+				HttpStatus.CREATED.value(), 
+				"Category Created Successfully", 
+				createdCategory
+		);
+		
+		return new ResponseEntity<ApiResponseCategoryModel>(apiResponseCategoryModel, HttpStatus.CREATED);
 	}
 	
 	//update
-	@PutMapping("/{catId}")
-	public ResponseEntity<CategoryModel> updateCategory(@Valid @RequestBody CategoryModel categoryModel,@PathVariable Integer catId)
+	@PutMapping("/")
+	public ResponseEntity<ApiResponseCategoryModel> updateCategory(@Valid @RequestBody CategoryModel categoryModel)
 	{
-		CategoryModel updatedCategory=this.categoryService.updateCategory(categoryModel,catId);
-		return new ResponseEntity<CategoryModel>(updatedCategory,HttpStatus.OK);
+		CategoryModel updatedCategory = this.categoryService.updateCategory(categoryModel);
+		
+		ApiResponseCategoryModel apiResponseCategoryModel = new ApiResponseCategoryModel(
+				true, 
+				HttpStatus.OK.value(), 
+				"Category Updated Successfully", 
+				updatedCategory
+		);
+		
+		return new ResponseEntity<ApiResponseCategoryModel>(apiResponseCategoryModel,HttpStatus.OK);
 	}
 	
 	//delete
@@ -53,7 +71,7 @@ public class CategoryController {
 		ApiResponseCategoryModel apiResponseCategoryModel = new ApiResponseCategoryModel(
 				true, 
 				HttpStatus.OK.value(), 
-				"User Deleted Successfully", 
+				"Category Deleted Successfully", 
 				null
 		);
 		return new ResponseEntity<ApiResponseCategoryModel>(apiResponseCategoryModel,HttpStatus.OK);
@@ -61,18 +79,33 @@ public class CategoryController {
 	
 	//get
 	@GetMapping("/{catId}")
-	public ResponseEntity<CategoryModel> getCategory(@PathVariable Integer catId)
+	public ResponseEntity<ApiResponseCategoryModel> getCategory(@PathVariable Integer catId)
 	{
 		CategoryModel categoryModel=this.categoryService.getCategory(catId);
-		return new ResponseEntity<CategoryModel>(categoryModel,HttpStatus.OK);
+		
+		ApiResponseCategoryModel apiResponseCategoryModel = new ApiResponseCategoryModel(
+				true, 
+				HttpStatus.CREATED.value(), 
+				"Category Fetched Successfully", 
+				categoryModel
+		);
+		
+		return new ResponseEntity<ApiResponseCategoryModel>(apiResponseCategoryModel,HttpStatus.OK);
 	}
 	
 	//getAll
 	@GetMapping("/")
-	public ResponseEntity<List<CategoryModel>> getAllCategories()
+	public ResponseEntity<ApiResponseCategoryModels> getAllCategories()
 	{
 		List<CategoryModel> categories = this.categoryService.getAllCategories();
 		
-		return ResponseEntity.ok(categories);
+		ApiResponseCategoryModels apiResponseCategoryModels = new ApiResponseCategoryModels(
+				true, 
+				HttpStatus.OK.value(), 
+				"Categories Fetched Successfully", 
+				categories
+		);
+		
+		return new ResponseEntity<ApiResponseCategoryModels>(apiResponseCategoryModels,HttpStatus.OK);
 	}
 }

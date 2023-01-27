@@ -10,7 +10,7 @@ public interface CategoryService {
 	CategoryModel createCategory(CategoryModel categoryModel);
 	
 	//update
-	CategoryModel updateCategory(CategoryModel categoryModel, Integer categoryId);
+	CategoryModel updateCategory(CategoryModel categoryModel);
 	
 	//delete
 	void deleteCategory(Integer categoryId);

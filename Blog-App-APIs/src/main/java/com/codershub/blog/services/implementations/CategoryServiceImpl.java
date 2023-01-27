@@ -30,9 +30,9 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryModel updateCategory(CategoryModel categoryModel, Integer categoryId) {
+	public CategoryModel updateCategory(CategoryModel categoryModel) {
 		
-		Category cat=this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","Category Id", categoryId));
+		Category cat=this.categoryRepo.findById(categoryModel.getCategoryId()).orElseThrow(()->new ResourceNotFoundException("Category","Category Id", categoryModel.getCategoryId()));
 		
 		cat.setCategoryTitle(categoryModel.getCategoryTitle());
 		cat.setCategoryDescription(categoryModel.getCategoryDescription());
