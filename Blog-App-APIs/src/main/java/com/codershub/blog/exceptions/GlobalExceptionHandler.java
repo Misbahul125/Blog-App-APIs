@@ -10,8 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.codershub.blog.payloads.user.ApiResponseUserModel;
-
 @RestControllerAdvice  //used for global exception handling as it checks all controllers present.
 public class GlobalExceptionHandler {
 
