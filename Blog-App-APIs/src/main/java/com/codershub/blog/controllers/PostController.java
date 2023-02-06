@@ -20,7 +20,7 @@ public class PostController {
 	private PostService postService;
 	
 	//create 
-	@PostMapping("/user/{userId}/category/{categoryId}/posts")
+	@PostMapping("/users/{userId}/categories/{categoryId}/posts")
 	public ResponseEntity<PostModel> createPost(@RequestBody PostModel postModel,@PathVariable Integer userId,@PathVariable Integer categoryId)
 	{
 		PostModel createPost=this.postService.createPost(postModel, userId, categoryId);

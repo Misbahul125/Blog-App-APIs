@@ -29,6 +29,7 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private UserRepository userRepo;
 	
+	@Autowired
 	private CategoryRepository categoryRepo;
 	
 	@Override
