@@ -2,6 +2,7 @@ package com.codershub.blog.services.implementations;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +76,31 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getPostByCategory(Integer categoryId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PostModel> getPostByCategory(Integer categoryId) {
+		
+		Category category=this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","CategoryId",categoryId));
+		List<Post> posts=this.postRepo.findByCategory(category);
+		
+		List<PostModel> postModels=posts.stream().map((post)->this.modelMapper.map(posts, PostModel.class)).collect(Collectors.toList());
+		
+		
+		return postModels;
 	}
 
 	@Override
-	public List<Post> getPostByUser(Integer userId) {
-		// TODO Auto-generated method stub
+	public List<PostModel> getPostByUser(Integer userId) {
+		
+		User user=this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","UserId",userId));
+		List<Post> posts=this.postRepo.findByUser(user);
+		
+		List<PostModel> postModels=posts.stream().map((post)->this.modelMapper.map(posts, PostModel.class)).collect(Collectors.toList());
+		
+		return postModels;
+	}
+	
+	@Override
+	public List<Post> searchPosts(String keyword)
+	{
 		return null;
 	}
 
