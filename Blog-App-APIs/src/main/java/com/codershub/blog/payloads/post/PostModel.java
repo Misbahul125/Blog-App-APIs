@@ -13,6 +13,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostModel {
+	
+	private Integer postId;
+	
 	private String title;
 	
 	private String content;

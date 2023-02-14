@@ -85,7 +85,7 @@ public class CategoryController {
 		
 		ApiResponseCategoryModel apiResponseCategoryModel = new ApiResponseCategoryModel(
 				true, 
-				HttpStatus.CREATED.value(), 
+				HttpStatus.OK.value(), 
 				"Category Fetched Successfully", 
 				categoryModel
 		);
