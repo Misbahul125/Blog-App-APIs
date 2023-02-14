@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codershub.blog.payloads.category.ApiResponseCategoryModel;
 import com.codershub.blog.payloads.post.ApiResponsePostModel;
 import com.codershub.blog.payloads.post.ApiResponsePostModels;
 import com.codershub.blog.payloads.post.PostModel;
@@ -39,6 +38,37 @@ public class PostController {
 		);
 		
 		return new ResponseEntity<ApiResponsePostModel>(apiResponsePostModel, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/posts")
+	public ResponseEntity<ApiResponsePostModels> getAllPosts() {
+		List<PostModel> allPosts = this.postService.getAllPosts();
+		
+		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(
+				true,
+				HttpStatus.OK.value(),
+				"Posts Fetched Successfully",
+				allPosts
+				);
+				
+		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/post/{postId}")
+	public ResponseEntity<ApiResponsePostModel> getPostById(@PathVariable Integer postId) {
+		
+		PostModel postModel = this.postService.getPostById(postId);
+		
+		ApiResponsePostModel apiResponsePostModel = new ApiResponsePostModel(
+				true,
+				HttpStatus.OK.value(),
+				"Post Fetched Successfully",
+				postModel
+				);
+		
+		return new ResponseEntity<ApiResponsePostModel>(apiResponsePostModel, HttpStatus.OK);
+		
 	}
 
 	// get by user

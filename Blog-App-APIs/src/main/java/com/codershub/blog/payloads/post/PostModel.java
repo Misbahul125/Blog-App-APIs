@@ -5,6 +5,7 @@ import java.util.Date;
 import com.codershub.blog.payloads.category.CategoryModel;
 import com.codershub.blog.payloads.user.UserModel;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostModel {
 	
 	private Integer postId;

@@ -11,16 +11,16 @@ public interface PostService {
 	PostModel createPost(PostModel postModel,Integer userId, Integer categoryId);
 	
 	//Update
-	Post updatePost(PostModel postModel,Integer postId);
+	PostModel updatePost(PostModel postModel,Integer postId);
 	
 	//delete
 	void deletePost(Integer id);
 	
 	//Get all posts
-	List<Post> getAllPosts();
+	List<PostModel> getAllPosts();
 	
 	//get Single post
-	Post getPostById(Integer postId);
+	PostModel getPostById(Integer postId);
 	
 	//get all post by category
 	List<PostModel> getPostByCategory(Integer categoryId);
@@ -29,5 +29,5 @@ public interface PostService {
 	List<PostModel> getPostByUser(Integer userId);
 	
 	//search posts
-	List<Post> searchPosts(String keyword);
+	List<PostModel> searchPosts(String keyword);
 }

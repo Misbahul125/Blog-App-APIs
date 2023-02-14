@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post updatePost(PostModel postModel, Integer postId) {
+	public PostModel updatePost(PostModel postModel, Integer postId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -64,21 +64,30 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getAllPosts() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PostModel> getAllPosts() {
+		
+		List<Post> allPosts = this.postRepo.findAll();
+		
+		List<PostModel> postModels = allPosts.stream().map((post) -> this.modelMapper.map(post, PostModel.class)).collect(Collectors.toList());
+		
+		return postModels;
 	}
 
 	@Override
-	public Post getPostById(Integer postId) {
-		// TODO Auto-generated method stub
-		return null;
+	public PostModel getPostById(Integer postId) {
+		
+		Post post = this.postRepo.findById(postId)
+				.orElseThrow(
+						(() -> new ResourceNotFoundException("Post", "post ID", postId))
+						);
+		
+		return this.modelMapper.map(post, PostModel.class);
 	}
 
 	@Override
 	public List<PostModel> getPostByCategory(Integer categoryId) {
 		
-		Category category=this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Category","CategoryId",categoryId));
+		Category category=this.categoryRepo.findById(categoryId).orElseThrow(()->new ResourceNotFoundException("Post","CategoryId",categoryId));
 		List<Post> posts=this.postRepo.findByCategory(category);
 		
 		List<PostModel> postModels=posts.stream().map((post)->this.modelMapper.map(post, PostModel.class)).collect(Collectors.toList());
@@ -90,7 +99,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<PostModel> getPostByUser(Integer userId) {
 		
-		User user=this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","UserId",userId));
+		User user=this.userRepo.findById(userId).orElseThrow(()->new ResourceNotFoundException("Post","UserId",userId));
 		List<Post> posts=this.postRepo.findByUser(user);
 		
 		List<PostModel> postModels=posts.stream().map((post)->this.modelMapper.map(post, PostModel.class)).collect(Collectors.toList());
@@ -99,7 +108,7 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	@Override
-	public List<Post> searchPosts(String keyword)
+	public List<PostModel> searchPosts(String keyword)
 	{
 		return null;
 	}
