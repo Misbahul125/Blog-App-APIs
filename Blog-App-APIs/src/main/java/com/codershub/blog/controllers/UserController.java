@@ -23,88 +23,65 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
-	//POST-create user
+
+	// POST-create user
 	@PostMapping("/")
 	public ResponseEntity<ApiResponseUserModel> createUser(@Valid @RequestBody UserModel userModel) {
-		
+
 		UserModel createdUser = this.userService.createUser(userModel);
-		
-		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
-				true, 
-				HttpStatus.CREATED.value(), 
-				"User Created Successfully", 
-				createdUser
-		);
-		
+
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(true, HttpStatus.CREATED.value(),
+				"User Created Successfully", createdUser);
+
 		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.CREATED);
 	}
-	
-	//PUT-update user
-	@PutMapping("/")
-	public ResponseEntity<ApiResponseUserModel> updateUser(@Valid @RequestBody UserModel userModel)
-	{
-		UserModel updatedUser=this.userService.updateUser(userModel);
-		
-		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
-				true, 
-				HttpStatus.OK.value(), 
-				"User Updated Successfully", 
-				updatedUser
-		);
-		
+
+	// GET-get user
+	// Single user
+	@GetMapping("/{userId}")
+	public ResponseEntity<ApiResponseUserModel> getSingleUser(@PathVariable Integer userId) {
+		UserModel userModel = this.userService.getUserById(userId);
+
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(true, HttpStatus.OK.value(),
+				"User Fetched Successfully", userModel);
+
 		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
 	}
-	
-	//DELETE-delete user
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<ApiResponseUserModel> deleteUser(@PathVariable Integer userId)
-	{
-		this.userService.deleteUserById(userId);
-		
-		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
-				true, 
-				HttpStatus.OK.value(), 
-				"User Deleted Successfully", 
-				null
-		);
-		
-		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
-	}
-	
-	//GET-get user
-	//Multiple user
+
+	// Multiple user
 	@GetMapping("/")
-	public ResponseEntity<ApiResponseUserModels> getAllUsers()
-	{
+	public ResponseEntity<ApiResponseUserModels> getAllUsers() {
 		List<UserModel> userModels = this.userService.getAllUsers();
-		
-		ApiResponseUserModels apiResponseUserModels = new ApiResponseUserModels(
-				true, 
-				HttpStatus.OK.value(), 
-				"Users Fetched Successfully", 
-				userModels
-		);
-		
+
+		ApiResponseUserModels apiResponseUserModels = new ApiResponseUserModels(true, HttpStatus.OK.value(),
+				"Users Fetched Successfully", userModels);
+
 		return new ResponseEntity<ApiResponseUserModels>(apiResponseUserModels, HttpStatus.OK);
 	}
 
-	//Single user
-	@GetMapping("/{userId}")
-	public ResponseEntity<ApiResponseUserModel> getSingleUser(@PathVariable Integer userId)
-	{
-		UserModel userModel = this.userService.getUserById(userId);
-		
-		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(
-				true, 
-				HttpStatus.OK.value(), 
-				"User Fetched Successfully", 
-				userModel
-		);
-		
+	// PUT-update user
+	@PutMapping("/")
+	public ResponseEntity<ApiResponseUserModel> updateUser(@Valid @RequestBody UserModel userModel) {
+		UserModel updatedUser = this.userService.updateUser(userModel);
+
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(true, HttpStatus.OK.value(),
+				"User Updated Successfully", updatedUser);
+
 		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
 	}
+
+	// DELETE-delete user
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<ApiResponseUserModel> deleteUser(@PathVariable Integer userId) {
+		this.userService.deleteUserById(userId);
+
+		ApiResponseUserModel apiResponseUserModel = new ApiResponseUserModel(true, HttpStatus.OK.value(),
+				"User Deleted Successfully", null);
+
+		return new ResponseEntity<ApiResponseUserModel>(apiResponseUserModel, HttpStatus.OK);
+	}
+
 }

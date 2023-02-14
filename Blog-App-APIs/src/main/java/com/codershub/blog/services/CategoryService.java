@@ -4,20 +4,20 @@ import java.util.List;
 
 import com.codershub.blog.payloads.category.CategoryModel;
 
-
 public interface CategoryService {
-	//Create
+	// Create
 	CategoryModel createCategory(CategoryModel categoryModel);
-	
-	//update
-	CategoryModel updateCategory(CategoryModel categoryModel);
-	
-	//delete
-	void deleteCategory(Integer categoryId);
-	
-	//get
+
+	// get
 	CategoryModel getCategory(Integer categoryId);
-	
-	//getAll
+
+	// getAll
 	List<CategoryModel> getAllCategories();
+
+	// update
+	CategoryModel updateCategory(CategoryModel categoryModel);
+
+	// delete
+	void deleteCategory(Integer categoryId);
+
 }

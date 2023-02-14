@@ -29,7 +29,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@Column(name = "user_name", length = 100)
 	private String name;

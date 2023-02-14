@@ -25,11 +25,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel createUser(UserModel userModel) {
 		
-		User user = this.userModelToUserEntity(userModel);
+		User user = this.modelMapper.map(userModel, User.class);
 		
 		user = this.userRepository.save(user);
 		
-		return this.userEntityToUserModel(user);
+		return this.modelMapper.map(user, UserModel.class);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 						(() -> new ResourceNotFoundException("User", "user ID", userId))
 						);
 		
-		return this.userEntityToUserModel(user);
+		return this.modelMapper.map(user, UserModel.class);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 		
 		List<User> users = this.userRepository.findAll();
 		
-		List<UserModel> userModels = users.stream().map(userModel -> this.userEntityToUserModel(userModel)).collect(Collectors.toList());
+		List<UserModel> userModels = users.stream().map(user -> this.modelMapper.map(user, UserModel.class)).collect(Collectors.toList());
 		
 		return userModels;
 	}
@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService {
 						(() -> new ResourceNotFoundException("User", "user ID", userModel.getId()))
 						);
 		
-		userFromDB = this.userModelToUserEntity(userModel);
+		userFromDB = this.modelMapper.map(userModel, User.class);
 		
 		User updatedUser = this.userRepository.save(userFromDB);
 		
-		return this.userEntityToUserModel(updatedUser);
+		return this.modelMapper.map(updatedUser, UserModel.class);
 	}
 
 	@Override
@@ -78,32 +78,6 @@ public class UserServiceImpl implements UserService {
 				);
 		
 		this.userRepository.delete(userFromDB);
-	}
-	
-	private UserModel userEntityToUserModel(User user) {
-		
-		/*
-		 * UserModel userModel = new UserModel( user.getId(), user.getName(),
-		 * user.getEmail(), user.getPassword(), user.getRole(), user.isActive(),
-		 * user.getImageURL(), user.getAbout() );
-		 */
-		
-		UserModel userModel = this.modelMapper.map(user, UserModel.class);
-		
-		return userModel;
-	}
-	
-	private User userModelToUserEntity(UserModel userModel) {
-		
-		/*
-		 * User user = new User( userModel.getId(), userModel.getName(),
-		 * userModel.getEmail(), userModel.getPassword(), userModel.getRole(),
-		 * userModel.isActive(), userModel.getImageURL(), userModel.getAbout() );
-		 */
-		
-		User user = this.modelMapper.map(userModel, User.class);
-		
-		return user;
 	}
 
 }

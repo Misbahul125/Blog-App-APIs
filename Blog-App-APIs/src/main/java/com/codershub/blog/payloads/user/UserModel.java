@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 public class UserModel {
 	
-	private int id;
+	private Integer id;
 	
 	@NotEmpty(message = "Name cannot be empty !!")
 	@Size(min = 5, message = "Name should have at least 5 characters !!")
