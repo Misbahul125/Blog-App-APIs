@@ -20,7 +20,7 @@ public interface PostService {
 	List<PostModel> getPostByUser(Integer userId);
 
 	// Get all posts
-	List<PostModel> getAllPosts();
+	List<PostModel> getAllPosts(Integer pageNumber,Integer pageSize);
 
 	// search posts
 	List<PostModel> searchPosts(String keyword);

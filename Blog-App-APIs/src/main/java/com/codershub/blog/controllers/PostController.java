@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codershub.blog.payloads.post.ApiResponsePostModel;
@@ -73,8 +74,10 @@ public class PostController {
 	}
 
 	@GetMapping("/posts")
-	public ResponseEntity<ApiResponsePostModels> getAllPosts() {
-		List<PostModel> allPosts = this.postService.getAllPosts();
+	public ResponseEntity<ApiResponsePostModels> getAllPosts(@RequestParam(value="pageNumber",defaultValue="0",required=false)
+			Integer pageNumber,@RequestParam(value="pageSize",defaultValue="10",required=false) Integer pageSize) {
+		
+		List<PostModel> allPosts = this.postService.getAllPosts(pageNumber,pageSize);
 
 		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
 				"Posts Fetched Successfully", allPosts);
