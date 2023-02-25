@@ -68,34 +68,40 @@ public class PostServiceImpl implements PostService {
 		return this.modelMapper.map(post, PostModel.class);
 	}
 
-//	@Override
-//	public ApiResponsePostModels getPostByCategory(Integer categoryId, Integer pageNumber, Integer pageSize) {
-//
-//		Category category = this.categoryRepo.findById(categoryId)
-//				.orElseThrow(() -> new ResourceNotFoundException("Post", "CategoryId", categoryId));
-//		
-//		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//
-//		Page<Post> pagePosts = this.postRepo.findByCategory(category, pageable);
-//
-//		List<Post> allPosts = pagePosts.getContent();
-//
-//		List<PostModel> postModels = allPosts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
-//				.collect(Collectors.toList());
-//		
-//		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
-//				"Posts Fetched Successfully", pagePosts.getNumber(), pagePosts.getSize(), pagePosts.getTotalElements(),
-//				pagePosts.getTotalPages(), pagePosts.isLast(), postModels);
-//
-//		if (pagePosts.getNumber() >= pagePosts.getTotalPages()) {
-//
-//			apiResponsePostModels.setMessage("No more post(s) found");
-//			apiResponsePostModels.setPostModels(null);
-//
-//		}
-//
-//		return apiResponsePostModels;
-//	}
+	@Override
+	public ApiResponsePostModels getPostByCategory(Integer categoryId, Integer pageNumber, Integer pageSize,
+			String sortBy, Integer sortMode) {
+
+		Category category = this.categoryRepo.findById(categoryId)
+				.orElseThrow(() -> new ResourceNotFoundException("Posts", "CategoryId", categoryId));
+
+		// sorting format
+		Sort sort = (sortMode == 0) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+		// paging format
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+		// retrieving paged data items
+		Page<Post> pagePosts = this.postRepo.findByCategory(category, pageable);
+
+		List<Post> allPosts = pagePosts.getContent();
+
+		List<PostModel> postModels = allPosts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
+				.collect(Collectors.toList());
+
+		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
+				"Posts Fetched Successfully", pagePosts.getNumber(), pagePosts.getSize(), pagePosts.getTotalElements(),
+				pagePosts.getTotalPages(), pagePosts.isLast(), postModels);
+
+		if (pagePosts.getNumber() >= pagePosts.getTotalPages()) {
+
+			apiResponsePostModels.setMessage("No more post(s) found");
+			apiResponsePostModels.setPostModels(null);
+
+		}
+
+		return apiResponsePostModels;
+	}
 
 	@Override
 	public ApiResponsePostModels getPostByUser(Integer userId, Integer pageNumber, Integer pageSize, String sortBy,
