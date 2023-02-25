@@ -52,42 +52,44 @@ public class PostController {
 
 	}
 
-	// get by user
-//	@GetMapping("/users/{userId}/posts")
-//	public ResponseEntity<ApiResponsePostModels> getPostsByUser(
-//			@PathVariable Integer userId
-//			) {
-//		List<PostModel> posts = this.postService.getPostByUser(userId);
+//	// get by category
+//	@GetMapping("/categories/{categoryId}/posts")
+//	public ResponseEntity<ApiResponsePostModels> getPostsbyCategory(@PathVariable Integer categoryId,
+//			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+//			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize,
+//			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+//			@RequestParam(value = "sortMode", defaultValue = "0", required = false) Integer sortMode) {
 //
-//		ApiResponsePostModels apiResponsePostModels = 
+//		ApiResponsePostModels apiResponsePostModels = this.postService.getPostByUser(userId, pageNumber, pageSize,
+//				sortBy, sortMode);
 //
 //		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
+//		
 //	}
 
-	/*
-	 * // get by category
-	 * 
-	 * @GetMapping("/categories/{categoryId}/posts") public
-	 * ResponseEntity<ApiResponsePostModels> getPostsbyCategory(@PathVariable
-	 * Integer categoryId) { List<PostModel> posts =
-	 * this.postService.getPostByCategory(categoryId);
-	 * 
-	 * ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true,
-	 * HttpStatus.OK.value(), "Post(s) Fetched Successfully", posts);
-	 * 
-	 * return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels,
-	 * HttpStatus.OK); }
-	 */
+	// get by user
+	@GetMapping("/users/{userId}/posts")
+	public ResponseEntity<ApiResponsePostModels> getPostsByUser(@PathVariable Integer userId,
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortMode", defaultValue = "0", required = false) Integer sortMode) {
+
+		ApiResponsePostModels apiResponsePostModels = this.postService.getPostByUser(userId, pageNumber, pageSize,
+				sortBy, sortMode);
+
+		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
+	}
 
 	@GetMapping("/posts")
 	public ResponseEntity<ApiResponsePostModels> getAllPosts(
 			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
 			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize,
 			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-			@RequestParam(value = "sortMode", defaultValue = "0", required = false) Integer sortMode
-			) {
+			@RequestParam(value = "sortMode", defaultValue = "0", required = false) Integer sortMode) {
 
-		ApiResponsePostModels apiResponsePostModels = this.postService.getAllPosts(pageNumber, pageSize, sortBy, sortMode);
+		ApiResponsePostModels apiResponsePostModels = this.postService.getAllPosts(pageNumber, pageSize, sortBy,
+				sortMode);
 
 		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
 

@@ -97,27 +97,51 @@ public class PostServiceImpl implements PostService {
 //		return apiResponsePostModels;
 //	}
 
-	/*
-	 * @Override public ApiResponsePostModels getPostByUser(Integer userId) {
-	 * 
-	 * User user = this.userRepo.findById(userId) .orElseThrow(() -> new
-	 * ResourceNotFoundException("Post", "UserId", userId));
-	 * 
-	 * List<Post> posts = this.postRepo.findByUser(user);
-	 * 
-	 * List<PostModel> postModels = posts.stream().map((post) ->
-	 * this.modelMapper.map(post, PostModel.class)) .collect(Collectors.toList());
-	 * 
-	 * return postModels; }
-	 */
+	@Override
+	public ApiResponsePostModels getPostByUser(Integer userId, Integer pageNumber, Integer pageSize, String sortBy,
+			Integer sortMode) {
+
+		User user = this.userRepo.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Posts", "UserId", userId));
+
+		// sorting format
+		Sort sort = (sortMode == 0) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+		// paging format
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+		// retrieving paged data items
+		Page<Post> pagePosts = this.postRepo.findByUser(user, pageable);
+
+		List<Post> allPosts = pagePosts.getContent();
+
+		List<PostModel> postModels = allPosts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
+				.collect(Collectors.toList());
+
+		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
+				"Posts Fetched Successfully", pagePosts.getNumber(), pagePosts.getSize(), pagePosts.getTotalElements(),
+				pagePosts.getTotalPages(), pagePosts.isLast(), postModels);
+
+		if (pagePosts.getNumber() >= pagePosts.getTotalPages()) {
+
+			apiResponsePostModels.setMessage("No more post(s) found for this user");
+			apiResponsePostModels.setPostModels(null);
+
+		}
+
+		return apiResponsePostModels;
+	}
 
 	@Override
 	public ApiResponsePostModels getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode) {
-		
+
+		// sorting format
 		Sort sort = (sortMode == 0) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
+		// paging format
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
+		// retrieving paged data items
 		Page<Post> pagePosts = this.postRepo.findAll(pageable);
 
 		List<Post> allPosts = pagePosts.getContent();

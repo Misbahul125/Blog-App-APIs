@@ -15,9 +15,9 @@ public interface PostService {
 
 	  // get all post by category 
 	//ApiResponsePostModels getPostByCategory(Integer categoryId, Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
-	  
-	 /* // get all posts by user ApiResponsePostModels getPostByUser(Integer userId, Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
-	 */
+
+	// get all posts by user 
+	ApiResponsePostModels getPostByUser(Integer userId, Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
 
 	// Get all posts
 	ApiResponsePostModels getAllPosts(Integer pageNumber,Integer pageSize, String sortBy, Integer sortMode);

@@ -11,6 +11,7 @@ import com.codershub.blog.entities.Post;
 import com.codershub.blog.entities.User;
 
 public interface PostRepo extends JpaRepository<Post, Integer> {
-	List<Post> findByUser(User user);
+	
+	Page<Post> findByUser(User user, Pageable pageable);
 	//Page<Post> findByCategory(Category category, Pageable pageable);
 }
