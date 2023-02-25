@@ -19,6 +19,7 @@ import com.codershub.blog.payloads.post.ApiResponsePostModel;
 import com.codershub.blog.payloads.post.ApiResponsePostModels;
 import com.codershub.blog.payloads.post.PostModel;
 import com.codershub.blog.services.PostService;
+import com.codershub.blogutils.Constants;
 
 @RestController
 @RequestMapping("api")
@@ -51,19 +52,19 @@ public class PostController {
 
 	}
 
+	// get by user
+//	@GetMapping("/users/{userId}/posts")
+//	public ResponseEntity<ApiResponsePostModels> getPostsByUser(
+//			@PathVariable Integer userId
+//			) {
+//		List<PostModel> posts = this.postService.getPostByUser(userId);
+//
+//		ApiResponsePostModels apiResponsePostModels = 
+//
+//		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
+//	}
+
 	/*
-	 * // get by user
-	 * 
-	 * @GetMapping("/users/{userId}/posts") public
-	 * ResponseEntity<ApiResponsePostModels> getPostsByUser(@PathVariable Integer
-	 * userId) { List<PostModel> posts = this.postService.getPostByUser(userId);
-	 * 
-	 * ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true,
-	 * HttpStatus.OK.value(), "Post(s) Fetched Successfully", posts);
-	 * 
-	 * return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels,
-	 * HttpStatus.OK); }
-	 * 
 	 * // get by category
 	 * 
 	 * @GetMapping("/categories/{categoryId}/posts") public
@@ -80,12 +81,14 @@ public class PostController {
 
 	@GetMapping("/posts")
 	public ResponseEntity<ApiResponsePostModels> getAllPosts(
-			@RequestParam(value="pageNumber",defaultValue="0",required=false) Integer pageNumber,
-			@RequestParam(value="pageSize",defaultValue="1",required=false) Integer pageSize
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortMode", defaultValue = "0", required = false) Integer sortMode
 			) {
-		
-		ApiResponsePostModels apiResponsePostModels = this.postService.getAllPosts(pageNumber, pageSize);
-		
+
+		ApiResponsePostModels apiResponsePostModels = this.postService.getAllPosts(pageNumber, pageSize, sortBy, sortMode);
+
 		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
 
 	}
