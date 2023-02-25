@@ -7,6 +7,7 @@ public class AppConstants {
 	
 	public static final String SORT_BY_POST_ID = "postId";
 	public static final String SORT_BY_USER_ID = "id";
+	public static final String SORT_BY_CATEGORY_ID = "categoryId";
 	
 	public static final String SORT_MODE = "0";
 	

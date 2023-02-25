@@ -1,6 +1,5 @@
 package com.codershub.blog.controllers;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -31,7 +30,7 @@ import com.codershub.blogutils.AppConstants;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class PostController {
 
 	@Autowired

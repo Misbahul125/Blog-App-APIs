@@ -5,11 +5,20 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.codershub.blog.entities.Category;
+import com.codershub.blog.entities.Post;
 import com.codershub.blog.exceptions.ResourceNotFoundException;
+import com.codershub.blog.payloads.category.ApiResponseCategoryModels;
 import com.codershub.blog.payloads.category.CategoryModel;
+import com.codershub.blog.payloads.post.ApiResponsePostModels;
+import com.codershub.blog.payloads.post.PostModel;
 import com.codershub.blog.repositories.CategoryRepository;
 import com.codershub.blog.services.CategoryService;
 
@@ -38,11 +47,37 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryModel> getAllCategories() {
-		List<Category> categories = this.categoryRepo.findAll();
-		List<CategoryModel> catDtos = categories.stream().map((cat) -> this.modelMapper.map(cat, CategoryModel.class))
-				.collect(Collectors.toList());
-		return catDtos;
+	public ApiResponseCategoryModels getAllCategories(Integer pageNumber, Integer pageSize, String sortBy,
+			Integer sortMode) {
+
+		// sorting format
+		Sort sort = (sortMode == 0) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+		// paging format
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+		// retrieving paged data items
+		Page<Category> pageCategories = this.categoryRepo.findAll(pageable);
+
+		List<Category> allCategories = pageCategories.getContent();
+
+		List<CategoryModel> categoryModels = allCategories.stream()
+				.map((category) -> this.modelMapper.map(category, CategoryModel.class)).collect(Collectors.toList());
+
+		ApiResponseCategoryModels apiResponseCategoryModels = new ApiResponseCategoryModels(true, HttpStatus.OK.value(),
+				"Categories Fetched Successfully", pageCategories.getNumber(), pageCategories.getSize(),
+				pageCategories.getTotalElements(), pageCategories.getTotalPages(), pageCategories.isLast(),
+				categoryModels);
+
+		if (pageCategories.getNumber() >= pageCategories.getTotalPages()) {
+
+			apiResponseCategoryModels.setMessage("No more category(s) found");
+			apiResponseCategoryModels.setCategoryModels(null);
+
+		}
+
+		return apiResponseCategoryModels;
+
 	};
 
 	@Override

@@ -1,7 +1,6 @@
 package com.codershub.blog.services;
 
-import java.util.List;
-
+import com.codershub.blog.payloads.category.ApiResponseCategoryModels;
 import com.codershub.blog.payloads.category.CategoryModel;
 
 public interface CategoryService {
@@ -12,7 +11,7 @@ public interface CategoryService {
 	CategoryModel getCategory(Integer categoryId);
 
 	// getAll
-	List<CategoryModel> getAllCategories();
+	ApiResponseCategoryModels getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
 
 	// update
 	CategoryModel updateCategory(CategoryModel categoryModel);
