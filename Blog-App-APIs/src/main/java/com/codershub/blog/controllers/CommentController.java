@@ -40,7 +40,7 @@ public class CommentController {
 		return new ResponseEntity<ApiResponseCommentModel>(apiResponseCommentModel, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/post/{postId}/comment/{commentId}")
+	@GetMapping("/post/comment/{commentId}")
 	public ResponseEntity<ApiResponseCommentModel> getCommentById(@PathVariable Integer commentId) {
 
 		CommentModel commentModel = this.commentService.getCommentById(commentId);
