@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.codershub.blog.entities.Category;
 import com.codershub.blog.entities.Post;
 import com.codershub.blog.entities.User;
 import com.codershub.blog.exceptions.ResourceNotFoundException;
+import com.codershub.blog.payloads.post.ApiResponsePostModels;
 import com.codershub.blog.payloads.post.PostModel;
 import com.codershub.blog.repositories.CategoryRepository;
 import com.codershub.blog.repositories.PostRepo;
@@ -65,49 +67,68 @@ public class PostServiceImpl implements PostService {
 		return this.modelMapper.map(post, PostModel.class);
 	}
 
+	/*
+	 * @Override public ApiResponsePostModels getPostByCategory(Integer categoryId)
+	 * {
+	 * 
+	 * Category category = this.categoryRepo.findById(categoryId) .orElseThrow(() ->
+	 * new ResourceNotFoundException("Post", "CategoryId", categoryId)); List<Post>
+	 * posts = this.postRepo.findByCategory(category);
+	 * 
+	 * List<PostModel> postModels = posts.stream().map((post) ->
+	 * this.modelMapper.map(post, PostModel.class)) .collect(Collectors.toList());
+	 * 
+	 * return postModels; }
+	 */
+
+	/*
+	 * @Override public ApiResponsePostModels getPostByUser(Integer userId) {
+	 * 
+	 * User user = this.userRepo.findById(userId) .orElseThrow(() -> new
+	 * ResourceNotFoundException("Post", "UserId", userId));
+	 * 
+	 * List<Post> posts = this.postRepo.findByUser(user);
+	 * 
+	 * List<PostModel> postModels = posts.stream().map((post) ->
+	 * this.modelMapper.map(post, PostModel.class)) .collect(Collectors.toList());
+	 * 
+	 * return postModels; }
+	 */
+
 	@Override
-	public List<PostModel> getPostByCategory(Integer categoryId) {
-
-		Category category = this.categoryRepo.findById(categoryId)
-				.orElseThrow(() -> new ResourceNotFoundException("Post", "CategoryId", categoryId));
-		List<Post> posts = this.postRepo.findByCategory(category);
-
-		List<PostModel> postModels = posts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
-				.collect(Collectors.toList());
-
-		return postModels;
-	}
-
-	@Override
-	public List<PostModel> getPostByUser(Integer userId) {
-
-		User user = this.userRepo.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("Post", "UserId", userId));
-		List<Post> posts = this.postRepo.findByUser(user);
-
-		List<PostModel> postModels = posts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
-				.collect(Collectors.toList());
-
-		return postModels;
-	}
-
-	@Override
-	public List<PostModel> getAllPosts(Integer pageNumber,Integer pageSize) {
+	public ApiResponsePostModels getAllPosts(Integer pageNumber,Integer pageSize) {
 		
-		Pageable p=PageRequest.of(pageNumber, pageSize);
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		
-		Page<Post> pagePosts = this.postRepo.findAll(p);
+		Page<Post> pagePosts = this.postRepo.findAll(pageable);
 		
-		List<Post> allPosts=pagePosts.getContent();
+		List<Post> allPosts = pagePosts.getContent();
 
 		List<PostModel> postModels = allPosts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
 				.collect(Collectors.toList());
+		
+		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(
+				true, HttpStatus.OK.value(), "Posts Fetched Successfully", 
+				pagePosts.getNumber(),
+				pagePosts.getSize(),
+				pagePosts.getTotalElements(),
+				pagePosts.getTotalPages(),
+				pagePosts.isLast(),
+				postModels);
+		
+		if(pagePosts.getNumber() >= pagePosts.getTotalPages()) {
+			
+			apiResponsePostModels.setMessage("No more post(s) found");
+			apiResponsePostModels.setPostModels(null);
+			
+		}
 
-		return postModels;
+
+		return apiResponsePostModels;
 	}
 
 	@Override
-	public List<PostModel> searchPosts(String keyword) {
+	public ApiResponsePostModels searchPosts(String keyword) {
 		return null;
 	}
 

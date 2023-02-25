@@ -51,37 +51,41 @@ public class PostController {
 
 	}
 
-	// get by user
-	@GetMapping("/users/{userId}/posts")
-	public ResponseEntity<ApiResponsePostModels> getPostsByUser(@PathVariable Integer userId) {
-		List<PostModel> posts = this.postService.getPostByUser(userId);
-
-		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
-				"Post(s) Fetched Successfully", posts);
-
-		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
-	}
-
-	// get by category
-	@GetMapping("/categories/{categoryId}/posts")
-	public ResponseEntity<ApiResponsePostModels> getPostsbyCategory(@PathVariable Integer categoryId) {
-		List<PostModel> posts = this.postService.getPostByCategory(categoryId);
-
-		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
-				"Post(s) Fetched Successfully", posts);
-
-		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
-	}
+	/*
+	 * // get by user
+	 * 
+	 * @GetMapping("/users/{userId}/posts") public
+	 * ResponseEntity<ApiResponsePostModels> getPostsByUser(@PathVariable Integer
+	 * userId) { List<PostModel> posts = this.postService.getPostByUser(userId);
+	 * 
+	 * ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true,
+	 * HttpStatus.OK.value(), "Post(s) Fetched Successfully", posts);
+	 * 
+	 * return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels,
+	 * HttpStatus.OK); }
+	 * 
+	 * // get by category
+	 * 
+	 * @GetMapping("/categories/{categoryId}/posts") public
+	 * ResponseEntity<ApiResponsePostModels> getPostsbyCategory(@PathVariable
+	 * Integer categoryId) { List<PostModel> posts =
+	 * this.postService.getPostByCategory(categoryId);
+	 * 
+	 * ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true,
+	 * HttpStatus.OK.value(), "Post(s) Fetched Successfully", posts);
+	 * 
+	 * return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels,
+	 * HttpStatus.OK); }
+	 */
 
 	@GetMapping("/posts")
-	public ResponseEntity<ApiResponsePostModels> getAllPosts(@RequestParam(value="pageNumber",defaultValue="0",required=false)
-			Integer pageNumber,@RequestParam(value="pageSize",defaultValue="10",required=false) Integer pageSize) {
+	public ResponseEntity<ApiResponsePostModels> getAllPosts(
+			@RequestParam(value="pageNumber",defaultValue="0",required=false) Integer pageNumber,
+			@RequestParam(value="pageSize",defaultValue="1",required=false) Integer pageSize
+			) {
 		
-		List<PostModel> allPosts = this.postService.getAllPosts(pageNumber,pageSize);
-
-		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
-				"Posts Fetched Successfully", allPosts);
-
+		ApiResponsePostModels apiResponsePostModels = this.postService.getAllPosts(pageNumber, pageSize);
+		
 		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
 
 	}

@@ -18,6 +18,16 @@ public class ApiResponsePostModels {
 	private int code;//shows Http codes 
 	
 	private String message;//custom message
+	
+	private Integer pageNumber;
+	
+	private Integer pageSize;
+	
+	private Long totalItems;
+	
+	private Integer totalPages;
+	
+	private Boolean isLastPage;
 
 	private List<PostModel> postModels;
 }

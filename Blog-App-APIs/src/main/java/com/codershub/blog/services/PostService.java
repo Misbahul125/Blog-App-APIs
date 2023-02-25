@@ -2,7 +2,7 @@ package com.codershub.blog.services;
 
 import java.util.List;
 
-import com.codershub.blog.entities.Post;
+import com.codershub.blog.payloads.post.ApiResponsePostModels;
 import com.codershub.blog.payloads.post.PostModel;
 
 public interface PostService {
@@ -13,17 +13,18 @@ public interface PostService {
 	// get Single post
 	PostModel getPostById(Integer postId);
 
-	// get all post by category
-	List<PostModel> getPostByCategory(Integer categoryId);
-
-	// get all posts by user
-	List<PostModel> getPostByUser(Integer userId);
+	/*
+	 * // get all post by category ApiResponsePostModels getPostByCategory(Integer
+	 * categoryId);
+	 * 
+	 * // get all posts by user ApiResponsePostModels getPostByUser(Integer userId);
+	 */
 
 	// Get all posts
-	List<PostModel> getAllPosts(Integer pageNumber,Integer pageSize);
+	ApiResponsePostModels getAllPosts(Integer pageNumber,Integer pageSize);
 
 	// search posts
-	List<PostModel> searchPosts(String keyword);
+	ApiResponsePostModels searchPosts(String keyword);
 
 	// Update
 	PostModel updatePost(PostModel postModel);
