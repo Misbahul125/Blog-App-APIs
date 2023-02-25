@@ -94,6 +94,22 @@ public class PostController {
 		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
 
 	}
+	
+	//search posts
+	@GetMapping("/posts/search")
+	public ResponseEntity<ApiResponsePostModels> searchPostsByContent(
+			@RequestParam(value = "searchKey", required = true) String searchKey,
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "1", required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortMode", defaultValue = "0", required = false) Integer sortMode) {
+
+		ApiResponsePostModels apiResponsePostModels = this.postService.searchPostsByContent(searchKey, pageNumber, pageSize, sortBy,
+				sortMode);
+
+		return new ResponseEntity<ApiResponsePostModels>(apiResponsePostModels, HttpStatus.OK);
+
+	}
 
 	@PutMapping("/post")
 	public ResponseEntity<ApiResponsePostModel> updatePost(@RequestBody PostModel postModel) {

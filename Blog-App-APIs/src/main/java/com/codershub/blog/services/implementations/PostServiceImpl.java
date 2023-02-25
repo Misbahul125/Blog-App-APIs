@@ -170,8 +170,35 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public ApiResponsePostModels searchPosts(String keyword) {
-		return null;
+	public ApiResponsePostModels searchPostsByContent(String searchKey, Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode) {
+
+		// sorting format
+		Sort sort = (sortMode == 0) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+		// paging format
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+		// retrieving paged data items
+		Page<Post> pagePosts = this.postRepo.findByContentContaining(searchKey, pageable);
+
+		List<Post> allPosts = pagePosts.getContent();
+
+		List<PostModel> postModels = allPosts.stream().map((post) -> this.modelMapper.map(post, PostModel.class))
+				.collect(Collectors.toList());
+
+		ApiResponsePostModels apiResponsePostModels = new ApiResponsePostModels(true, HttpStatus.OK.value(),
+				"Posts Fetched Successfully", pagePosts.getNumber(), pagePosts.getSize(), pagePosts.getTotalElements(),
+				pagePosts.getTotalPages(), pagePosts.isLast(), postModels);
+
+		if (pagePosts.getNumber() >= pagePosts.getTotalPages()) {
+
+			apiResponsePostModels.setMessage("No more post(s) found");
+			apiResponsePostModels.setPostModels(null);
+
+		}
+
+		return apiResponsePostModels;
+
 	}
 
 	@Override

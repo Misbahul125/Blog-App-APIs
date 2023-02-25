@@ -25,7 +25,7 @@ public interface PostService {
 	ApiResponsePostModels getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
 
 	// search posts
-	ApiResponsePostModels searchPosts(String keyword);
+	ApiResponsePostModels searchPostsByContent(String searchKey, Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
 
 	// Update
 	PostModel updatePost(PostModel postModel);
