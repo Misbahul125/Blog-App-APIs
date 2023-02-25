@@ -12,14 +12,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.codershub.blog.entities.Post;
 import com.codershub.blog.entities.User;
 import com.codershub.blog.exceptions.ResourceNotFoundException;
-import com.codershub.blog.payloads.post.ApiResponsePostModels;
 import com.codershub.blog.payloads.user.ApiResponseUserModels;
 import com.codershub.blog.payloads.user.UserModel;
-import com.codershub.blog.services.UserService;
 import com.codershub.blog.repositories.UserRepository;
+import com.codershub.blog.services.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

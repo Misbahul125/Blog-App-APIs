@@ -1,7 +1,5 @@
 package com.codershub.blog.services;
 
-import java.util.List;
-
 import com.codershub.blog.payloads.post.ApiResponsePostModels;
 import com.codershub.blog.payloads.post.PostModel;
 

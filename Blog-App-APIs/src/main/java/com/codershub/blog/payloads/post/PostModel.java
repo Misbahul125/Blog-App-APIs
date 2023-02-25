@@ -1,8 +1,12 @@
 package com.codershub.blog.payloads.post;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 
 import com.codershub.blog.payloads.category.CategoryModel;
+import com.codershub.blog.payloads.comment.CommentModel;
 import com.codershub.blog.payloads.user.UserModel;
 
 import lombok.AllArgsConstructor;
@@ -29,4 +33,6 @@ public class PostModel {
 	private CategoryModel category;
 	
 	private UserModel user;
+	
+	private Set<CommentModel> comments = new HashSet<>();
 }
