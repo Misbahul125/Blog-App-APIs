@@ -1,7 +1,6 @@
 package com.codershub.blog.services;
 
-import java.util.List;
-
+import com.codershub.blog.payloads.user.ApiResponseUserModels;
 import com.codershub.blog.payloads.user.UserModel;
 
 public interface UserService {
@@ -10,7 +9,7 @@ public interface UserService {
 	
 	public UserModel getUserById(Integer userId);
 
-	public List<UserModel> getAllUsers();
+	public ApiResponseUserModels getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, Integer sortMode);
 	
 	public UserModel updateUser(UserModel userModel);
 	

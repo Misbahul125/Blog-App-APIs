@@ -13,13 +13,23 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ApiResponseUserModels {
-	
+
 	private boolean success;
-	
+
 	private int code;
-	
+
 	private String message;
-	
+
+	private Integer pageNumber;
+
+	private Integer pageSize;
+
+	private Long totalItems;
+
+	private Integer totalPages;
+
+	private Boolean isLastPage;
+
 	private List<UserModel> userModels;
 
 }

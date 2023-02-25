@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codershub.blog.payloads.user.ApiResponseUserModel;
 import com.codershub.blog.payloads.user.ApiResponseUserModels;
 import com.codershub.blog.payloads.user.UserModel;
 import com.codershub.blog.services.UserService;
+import com.codershub.blogutils.AppConstants;
 
 import jakarta.validation.Valid;
 
@@ -52,12 +54,15 @@ public class UserController {
 	}
 
 	// Multiple user
-	@GetMapping("/")
-	public ResponseEntity<ApiResponseUserModels> getAllUsers() {
-		List<UserModel> userModels = this.userService.getAllUsers();
+	@GetMapping("/all")
+	public ResponseEntity<ApiResponseUserModels> getAllUsers(
+			@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY_USER_ID, required = false) String sortBy,
+			@RequestParam(value = "sortMode", defaultValue = AppConstants.SORT_MODE, required = false) Integer sortMode) {
 
-		ApiResponseUserModels apiResponseUserModels = new ApiResponseUserModels(true, HttpStatus.OK.value(),
-				"Users Fetched Successfully", userModels);
+		ApiResponseUserModels apiResponseUserModels = this.userService.getAllUsers(pageNumber, pageSize, sortBy,
+				sortMode);
 
 		return new ResponseEntity<ApiResponseUserModels>(apiResponseUserModels, HttpStatus.OK);
 	}
